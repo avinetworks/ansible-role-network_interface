@@ -11,7 +11,7 @@
     src: "route_{{ ansible_os_family }}.j2"
     dest: "{{ net_path }}/route-{{ item.device }}"
   with_items: "{{ network_vlan_interfaces }}"
-  when: network_ether_interfaces is defined and item.route is defined
+  when: network_vlan_interfaces is defined and item.route is defined
 
 - name: Write configuration files for rhel route configuration
   template:
