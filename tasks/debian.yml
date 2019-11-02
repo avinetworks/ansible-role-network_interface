@@ -2,7 +2,7 @@
 - name: Install the required packages in Debian derivatives
   apt:
     name: "{{ item }}"
-    state: installed
+    state: present
   loop: "{{ network_pkgs }}"
   environment: "{{ env }}"
   when: network_check_packages
