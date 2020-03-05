@@ -18,7 +18,7 @@
 - name: Create the network configuration file for ethernet interfaces
   template:
     src: "ethernet_{{ ansible_os_family }}.j2"
-    dest: "{{ net_path }}/ifcfg-{{ item.device }}"
+    dest: "{{ net_path }}/{{ network_interface_file_prefix }}{{ item.device }}{{ network_interface_file_postfix }}"
   loop: "{{ network_ether_interfaces }}"
   when: network_ether_interfaces != []
   register: ether_result
@@ -26,7 +26,7 @@
 - name: Create the network configuration file for slave in the bond devices
   template:
     src: "bond_slave_{{ ansible_os_family }}.j2"
-    dest: "{{ net_path }}/ifcfg-{{ item.1 }}"
+    dest: "{{ net_path }}/{{ network_interface_file_prefix }}{{ item.1 }}{{ network_interface_file_postfix }}"
   with_subelements:
     - "{{ network_bond_interfaces }}"
     - bond_slaves
@@ -36,7 +36,7 @@
 - name: Create the network configuration file for bond devices
   template:
     src: "bond_{{ ansible_os_family }}.j2"
-    dest: "{{ net_path }}/ifcfg-{{ item.device }}"
+    dest: "{{ net_path }}/{{ network_interface_file_prefix }}{{ item.device }}{{ network_interface_file_postfix }}"
   loop: "{{ network_bond_interfaces }}"
   when: network_bond_interfaces != []
   register: bond_result
@@ -60,7 +60,7 @@
 - name: Create the network configuration file for vlan devices
   template:
     src: "ethernet_{{ ansible_os_family }}.j2"
-    dest: "{{ net_path }}/ifcfg-{{ item.device }}"
+    dest: "{{ net_path }}/{{ network_interface_file_prefix }}{{ item.device }}{{ network_interface_file_postfix }}"
   loop: "{{ network_vlan_interfaces }}"
   when: network_vlan_interfaces != []
   register: vlan_result
@@ -84,7 +84,7 @@
 - name: Create the network configuration file for bridge devices
   template:
     src: "bridge_{{ ansible_os_family }}.j2"
-    dest: "{{ net_path }}/ifcfg-{{ item.device }}"
+    dest: "{{ net_path }}/{{ network_interface_file_prefix }}{{ item.device }}{{ network_interface_file_postfix }}"
   loop: "{{ network_bridge_interfaces }}"
   when: network_bridge_interfaces != []
   register: bridge_result
@@ -92,7 +92,7 @@
 - name: Create the network configuration file for port on the bridge devices
   template:
     src: "bridge_port_{{ ansible_os_family }}.j2"
-    dest: "{{ net_path }}/ifcfg-{{ item.1 }}"
+    dest: "{{ net_path }}/{{ network_interface_file_prefix }}{{ item.1 }}{{ network_interface_file_postfix }}"
   with_subelements:
     - '{{ network_bridge_interfaces }}'
     - bridge_ports
