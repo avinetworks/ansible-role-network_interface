@@ -1,5 +1,5 @@
 ---
-network_pkgs:
+_network_pkgs:
   - python-selinux
   - bridge-utils
   - ifenslave
