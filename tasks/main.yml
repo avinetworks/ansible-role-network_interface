@@ -20,7 +20,7 @@
     src: "ethernet_{{ ansible_os_family }}.j2"
     dest: "{{ net_path }}/ifcfg-{{ item.device }}"
   loop: "{{ network_ether_interfaces }}"
-  when: network_ether_interfaces is defined
+  when: network_ether_interfaces != []
   register: ether_result
 
 - name: Create the network configuration file for slave in the bond devices
@@ -30,7 +30,7 @@
   with_subelements:
     - "{{ network_bond_interfaces }}"
     - bond_slaves
-  when: network_bond_interfaces is defined
+  when: network_bond_interfaces != []
   register: bond_port_result
 
 - name: Create the network configuration file for bond devices
@@ -38,7 +38,7 @@
     src: "bond_{{ ansible_os_family }}.j2"
     dest: "{{ net_path }}/ifcfg-{{ item.device }}"
   loop: "{{ network_bond_interfaces }}"
-  when: network_bond_interfaces
+  when: network_bond_interfaces != []
   register: bond_result
 
 - name: Make sure the bonding module is loaded
@@ -54,7 +54,7 @@
     dest: /etc/modules
     insertafter: EOF
   when:
-    - network_bond_interfaces
+    - network_bond_interfaces != []
     - network_modprobe_persist
 
 - name: Create the network configuration file for vlan devices
@@ -62,7 +62,7 @@
     src: "ethernet_{{ ansible_os_family }}.j2"
     dest: "{{ net_path }}/ifcfg-{{ item.device }}"
   loop: "{{ network_vlan_interfaces }}"
-  when: network_vlan_interfaces
+  when: network_vlan_interfaces != []
   register: vlan_result
 
 - name: Make sure the 8021q module is loaded
@@ -78,7 +78,7 @@
     dest: /etc/modules
     insertafter: EOF
   when:
-    - network_vlan_interfaces
+    - network_vlan_interfaces != []
     - network_modprobe_persist
 
 - name: Create the network configuration file for bridge devices
@@ -86,7 +86,7 @@
     src: "bridge_{{ ansible_os_family }}.j2"
     dest: "{{ net_path }}/ifcfg-{{ item.device }}"
   loop: "{{ network_bridge_interfaces }}"
-  when: network_bridge_interfaces is defined
+  when: network_bridge_interfaces != []
   register: bridge_result
 
 - name: Create the network configuration file for port on the bridge devices
@@ -96,7 +96,7 @@
   with_subelements:
     - '{{ network_bridge_interfaces }}'
     - bridge_ports
-  when: network_bridge_interfaces is defined
+  when: network_bridge_interfaces != []
   register: bridge_port_result
 
 # Restart Network Interfaces (deconfigurate & reconfigurate interfaces)

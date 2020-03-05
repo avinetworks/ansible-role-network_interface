@@ -11,28 +11,28 @@
     src: "route_{{ ansible_os_family }}.j2"
     dest: "{{ net_path }}/route-{{ item.device }}"
   loop: "{{ network_vlan_interfaces }}"
-  when: network_ether_interfaces is defined and item.route is defined
+  when: network_ether_interfaces != [] and item.route is defined
 
 - name: Write configuration files for rhel route configuration
   template:
     src: "route_{{ ansible_os_family }}.j2"
     dest: "{{ net_path }}/route-{{ item.device }}"
   loop: "{{ network_ether_interfaces }}"
-  when: network_ether_interfaces is defined and item.route is defined
+  when: network_ether_interfaces != [] and item.route is defined
 
 - name: Write configuration files for route configuration
   template:
     src: "route_{{ ansible_os_family }}.j2"
     dest: "{{ net_path }}/route-{{ item.device }}"
   loop: "{{ network_bond_interfaces }}"
-  when: network_bond_interfaces is defined and item.route is defined
+  when: network_bond_interfaces != [] and item.route is defined
 
 - name: Write configuration files for rhel route configuration
   template:
     src: "route_{{ ansible_os_family }}.j2"
     dest: "{{ net_path }}/route-{{ item.device }}"
   loop: "{{ network_bridge_interfaces }}"
-  when: network_bridge_interfaces is defined and item.route is defined
+  when: network_bridge_interfaces != [] and item.route is defined
 
 - name: Cleanup gateway dev that does not set to the one we want
   lineinfile:
