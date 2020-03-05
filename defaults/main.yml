@@ -7,5 +7,6 @@ network_vlan_interfaces: []
 network_check_packages: true
 network_allow_service_restart: true
 network_modprobe_persist: true
+network_configured_interfaces_only: false
 network_interface_file_prefix: "ifcfg-"
 network_interface_file_postfix: ""
