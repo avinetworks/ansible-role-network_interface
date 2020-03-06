@@ -27,11 +27,18 @@ The variables that can be passed to this role and a brief description about
 them are as follows:
 
 | Variable | Required | Default | Comments |
-|-----------------------|----------|-----------|---------|
+|-------------------------------------|----------|-----------|---------|
+| `network_pkgs` | No | `[]` | Typically needed packages like selinux, bridge-utils, ifenslave and iproute |
 | `network_ether_interfaces` | No | `[]` | The list of ethernet interfaces to be added to the system. |
 | `network_bridge_interfaces` | No | `[]` | The list of bridge interfaces to be added to the system. |
 | `network_bond_interfaces` | No | `[]` | The list of bonded interfaces to be added to the system. |
 | `network_vlan_interfaces` | No | `[]` | The list of vlan interfaces to be added to the system. |
+| `network_check_packages` | No | `true` | Install packages listed in network_pkgs. |
+| `network_allow_service_restart` | No | `true` | Whether interfaces/networking should get reconfigured and restarted. |
+| `network_modprobe_persist` | No | `true` | Persisting module loading. |
+| `network_configured_interfaces_only` | No | `false` | Removes interfaces not configured over this role entirely when enabled. |
+| `network_interface_file_prefix` | No | `ifcfg-` | The prefix for interface configuration files. |
+| `network_interface_file_postfix` | No | `` | The postfix for interface configuration files. |
 
 Note: The values for the list are listed in the examples below.
 
