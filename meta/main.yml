@@ -10,6 +10,8 @@ galaxy_info:
       versions:
         - wheezy
         - jessie
+        - stretch
+        - buster
     - name: Ubuntu
       versions:
         - precise
@@ -19,10 +21,22 @@ galaxy_info:
         - trusty
         - utopic
         - vivid
+        - wily
+        - xenial
+        - yakkety
+        - zesty
+        - artful
+        - bionic
+        - cosmic
+        - disco
+        - eoan
+        - focal
     - name: EL
       versions:
         - 7
   galaxy_tags:
     - networking
     - system
+    - interfaces
+    - network
 dependencies: []
