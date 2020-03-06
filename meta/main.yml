@@ -1,5 +1,6 @@
 ---
 galaxy_info:
+  description: This roles enables users to configure various network components on target machines.
   role_name: network_interface
   author: "Benno Joy, Martin Verges, Luke Short, Eric Anderson"
   company: "AnsibleWorks, First Colo GmbH"

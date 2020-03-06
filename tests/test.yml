@@ -2,7 +2,7 @@
 
   pre_tasks:
     - name: Ensure build dependencies are installed (RedHat).
-      yum: 
+      yum:
         name: "{{ item }}"
         state: present
       loop:
