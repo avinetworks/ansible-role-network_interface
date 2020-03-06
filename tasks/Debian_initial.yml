@@ -26,14 +26,14 @@
     dest: /etc/network/interfaces
     state: present
     insertafter: EOF
-  when: network_configured_interfaces_only == false
+  when: not network_configured_interfaces_only | bool
 
 - name: Make sure the source-directory include line is not there in interfaces file
   lineinfile:
     regexp: '^source-directory\s{{ net_path | regex_escape() }}/?'
     dest: /etc/network/interfaces
     state: absent
-  when: network_configured_interfaces_only == false
+  when: not network_configured_interfaces_only | bool
 
 - name: Create the directory for interface cfg files
   file:

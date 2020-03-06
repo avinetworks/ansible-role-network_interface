@@ -13,7 +13,9 @@
 
 # Execute configuration change
 - name: Execute Network Restart
-  shell: bash /etc/network/restart.sh | true
+  shell: |
+    set -o pipefail
+    bash /etc/network/restart.sh | true
 
 - name: Cleanup Network Restart script
   file:
