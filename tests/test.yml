@@ -22,6 +22,7 @@
         - unzip
         - tar
         - sudo
+        - python-jmespath
       when: ansible_os_family == 'Debian'
 
   roles:
