@@ -19,3 +19,4 @@
     path: "{{ item.path }}"
     state: absent
   with_items: "{{ config_files_to_delete.files }}"
+  notify: restart networking

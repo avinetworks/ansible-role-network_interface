@@ -1,0 +1,4 @@
+---
+#Restart Network Interfaces (deconfigurate & reconfigurate interfaces)
+- name: restart networking
+  include_tasks: "{{ ansible_os_family }}_restart.yml"

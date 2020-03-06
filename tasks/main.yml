@@ -29,6 +29,3 @@
 - name: Configure Bridge interfaces
   import_tasks: "bridge_interfaces.yml"
   when: network_bridge_interfaces | length > 0
-
-- name: Restart Network Interfaces (deconfigurate & reconfigurate interfaces)
-  include_tasks: "{{ ansible_os_family }}_restart.yml"

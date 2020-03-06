@@ -5,3 +5,4 @@
     dest: "{{ net_path }}/{{ network_interface_file_prefix }}{{ item.device }}{{ network_interface_file_postfix }}"
   loop: "{{ network_ether_interfaces }}"
   register: ether_result
+  notify: restart networking

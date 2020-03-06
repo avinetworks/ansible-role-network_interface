@@ -7,6 +7,7 @@
     - "{{ network_bond_interfaces }}"
     - bond_slaves
   register: bond_port_result
+  notify: restart networking
 
 - name: Create the network configuration file for bond devices
   template:
@@ -14,12 +15,14 @@
     dest: "{{ net_path }}/{{ network_interface_file_prefix }}{{ item.device }}{{ network_interface_file_postfix }}"
   loop: "{{ network_bond_interfaces }}"
   register: bond_result
+  notify: restart networking
 
 - name: Make sure the bonding module is loaded
   modprobe:
     name: bonding
     state: present
   when: bond_result is changed
+  notify: restart networking
 
 - name: Make the bonding module persistent
   become: true
@@ -29,3 +32,4 @@
     insertafter: EOF
   when:
     - network_modprobe_persist
+  notify: restart networking

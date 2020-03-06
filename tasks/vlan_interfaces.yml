@@ -5,12 +5,14 @@
     dest: "{{ net_path }}/{{ network_interface_file_prefix }}{{ item.device }}{{ network_interface_file_postfix }}"
   loop: "{{ network_vlan_interfaces }}"
   register: vlan_result
+  notify: restart networking
 
 - name: Make sure the 8021q module is loaded
   modprobe:
     name: 8021q
     state: present
   when: vlan_result is changed
+  notify: restart networking
 
 - name: Make the 8021q module persistent
   become: true
@@ -20,3 +22,4 @@
     insertafter: EOF
   when:
     - network_modprobe_persist
+  notify: restart networking

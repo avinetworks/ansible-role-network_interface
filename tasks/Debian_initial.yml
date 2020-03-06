@@ -17,6 +17,7 @@
       source {{ net_path }}/*
     dest: /etc/network/interfaces
   when: network_configured_interfaces_only
+  notify: restart networking
 
 - name: Make sure the source include line is there in interfaces file
   lineinfile:
