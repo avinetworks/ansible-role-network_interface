@@ -1,0 +1,22 @@
+---
+- name: Create the network configuration file for vlan devices
+  template:
+    src: "ethernet_{{ ansible_os_family }}.j2"
+    dest: "{{ net_path }}/{{ network_interface_file_prefix }}{{ item.device }}{{ network_interface_file_postfix }}"
+  loop: "{{ network_vlan_interfaces }}"
+  register: vlan_result
+
+- name: Make sure the 8021q module is loaded
+  modprobe:
+    name: 8021q
+    state: present
+  when: vlan_result is changed
+
+- name: Make the 8021q module persistent
+  become: true
+  lineinfile:
+    line: '8021q'
+    dest: /etc/modules
+    insertafter: EOF
+  when:
+    - network_modprobe_persist

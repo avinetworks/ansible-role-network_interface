@@ -1,0 +1,21 @@
+---
+- name: Get config files list
+  set_fact:
+    _config_files: "{{ [ _config_files, item ] | flatten | unique }}"
+  loop:
+    - "{{ network_ether_interfaces | json_query('[*].device') }}"
+    - "{{ network_bond_interfaces | json_query('[*].device') }}"
+    - "{{ network_vlan_interfaces | json_query('[*].device') }}"
+    - "{{ network_bridge_interfaces | json_query('[*].device') }}"
+
+- name: Find interface config files to delete
+  find:
+    paths: "{{ net_path }}"
+    excludes: "{{ [ network_interface_file_prefix ] | product(_config_files) | map('join', '') | list | product([ network_interface_file_postfix ]) | map('join', '') | list }}"
+  register: config_files_to_delete
+
+- name: Remove all interfaces config files not matching the pattern
+  file:
+    path: "{{ item.path }}"
+    state: absent
+  with_items: "{{ config_files_to_delete.files }}"

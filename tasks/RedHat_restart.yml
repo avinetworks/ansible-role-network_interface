@@ -1,0 +1,58 @@
+---
+- name: Enable the "network" service
+  service:
+    name: network
+    enabled: true
+  check_mode: yes
+  register: network_service
+  ignore_errors: true
+  when: network_allow_service_restart
+
+- name: Verify if the "network" service is enabled
+  set_fact:
+    network_service_enabled: "{{ not network_service.failed
+        and not network_service.changed }}"
+  when: network_allow_service_restart
+
+- name: Enable the "NetworkManager" service
+  service:
+    name: NetworkManager
+    enabled: true
+  check_mode: yes
+  register: NetworkManager_service
+  ignore_errors: true
+  when: network_allow_service_restart
+
+- name: Verify if the "NetworkManager" service is enabled
+  set_fact:
+    NetworkManager_service_enabled: "{{ not NetworkManager_service.failed
+        and not NetworkManager_service.changed }}"
+  when: network_allow_service_restart
+
+- name: Restart the "network" service on Red Hat systems
+  service:
+    name: network
+    state: restarted
+  when: >
+    (network_allow_service_restart
+     and network_service_enabled)
+     and (ether_result is changed
+          or bond_port_result is changed
+          or bond_result is changed
+          or vlan_result is changed
+          or bridge_result is changed
+          or bridge_port_result is changed)
+
+- name: Restart the "NetworkManager" service on Red Hat systems
+  service:
+    name: network
+    state: restarted
+  when: >
+    (network_allow_service_restart
+    and NetworkManager_service_enabled) and
+    (ether_result is changed or
+     bond_port_result is changed or
+     bond_result is changed or
+     vlan_result is changed or
+     bridge_result is changed or
+     bridge_port_result is changed)

@@ -1,0 +1,31 @@
+---
+- name: Create the network configuration file for slave in the bond devices
+  template:
+    src: "bond_slave_{{ ansible_os_family }}.j2"
+    dest: "{{ net_path }}/{{ network_interface_file_prefix }}{{ item.1 }}{{ network_interface_file_postfix }}"
+  with_subelements:
+    - "{{ network_bond_interfaces }}"
+    - bond_slaves
+  register: bond_port_result
+
+- name: Create the network configuration file for bond devices
+  template:
+    src: "bond_{{ ansible_os_family }}.j2"
+    dest: "{{ net_path }}/{{ network_interface_file_prefix }}{{ item.device }}{{ network_interface_file_postfix }}"
+  loop: "{{ network_bond_interfaces }}"
+  register: bond_result
+
+- name: Make sure the bonding module is loaded
+  modprobe:
+    name: bonding
+    state: present
+  when: bond_result is changed
+
+- name: Make the bonding module persistent
+  become: true
+  lineinfile:
+    line: 'bonding'
+    dest: /etc/modules
+    insertafter: EOF
+  when:
+    - network_modprobe_persist
