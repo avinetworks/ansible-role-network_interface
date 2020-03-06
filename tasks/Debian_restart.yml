@@ -15,7 +15,8 @@
 - name: Execute Network Restart
   shell: |
     set -o pipefail
-    bash /etc/network/restart.sh | true
+    bash /etc/network/restart.sh
+  failed_when: false
 
 - name: Cleanup Network Restart script
   file:
