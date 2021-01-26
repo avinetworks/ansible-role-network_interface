@@ -2,7 +2,9 @@
     address                {{ item.cidr | ipaddr('address') }}
     network                {{ item.cidr | ipaddr('network') }}
     netmask                {{ item.cidr | ipaddr('netmask') }}
+{% if item.cidr | ipaddr('broadcast') %}
     broadcast              {{ item.cidr | ipaddr('broadcast') }}
+{% endif %}
 {% elif item.address is defined and item.netmask is defined %}
 {% if item.address is defined %}
     address                {{ item.address }}
