@@ -238,6 +238,11 @@ ipv6_address: "aaaa:bbbb:cccc:dddd:dead:beef::1/64"
 ipv6_gateway: "aaaa:bbbb:cccc:dddd::1"
 ```
 
+9) You can also do IPv6 DHCP configuration on Ethernet on Debian only
+```
+ipv6_bootproto: dhcp
+```
+
 Create a playbook which applies this role to all hosts as shown below, and run
 the playbook. All the servers should have their network interfaces configured
 and routed updated.
@@ -249,7 +254,7 @@ and routed updated.
     - role: network
 ```
 
-9) This role can also optionally add network interfaces to firewalld zones. The
+10) This role can also optionally add network interfaces to firewalld zones. The
 core firewalld module (http://docs.ansible.com/ansible/latest/firewalld_module.html)
 can perform the same function, so if you make use of both modules then your
 playbooks may not be idempotent.  Consider this case, where only the firewalld

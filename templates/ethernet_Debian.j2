@@ -1,5 +1,6 @@
 
 auto {{ item.device }}
+{% if item.ipv6_address is not defined and item.ipv6_bootproto is not defined %}
 iface {{ item.device }} inet {% if item.bootproto is defined %}{{ item.bootproto }}{% elif item.cidr is defined or item.address is defined %}static{% else %}dhcp{% endif %}
 
 {% include 'Debian_ipv4_config.j2' %}
@@ -13,9 +14,11 @@ iface {{ item.device }} inet {% if item.bootproto is defined %}{{ item.bootproto
     {{ option }}
 {% endfor %}
 {% endif %}
+{% endif %}
 
-{% if item.ipv6_address is defined %}
-iface {{ item.device }} inet6 static
+{% if item.ipv6_address is defined or item.ipv6_bootproto is defined %}
+iface {{ item.device }} inet6 {% if item.ipv6_bootproto is defined %}{{ item.ipv6_bootproto }}{% elif item.ipv6_address is defined %}static{% endif %}
+
 {% include 'Debian_ipv6_config.j2' %}
 {% if item.ipv6_options is defined %}
 {% for option in item.ipv6_options %}
